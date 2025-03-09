@@ -3,7 +3,7 @@
 # Script to update the Guestbook application from v1 to v2
 
 # Set your namespace
-NAMESPACE="your-namespace"
+NAMESPACE="morok-ns"
 
 echo "Updating Dockerfile to v2..."
 sed -i 's/ENV VERSION=v1/ENV VERSION=v2/g' Dockerfile

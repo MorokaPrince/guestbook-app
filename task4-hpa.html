@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horizontal Pod Autoscaler Creation</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            line-height: 1.5;
+        }
+        pre {
+            background-color: #2d2d2d;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .prompt { color: #569CD6; }
+        .command { color: #DCDCAA; }
+        .output { color: #B5CEA8; }
+        .success { color: #6A9955; }
+        .highlight { color: #CE9178; }
+        .header {
+            background-color: #333;
+            padding: 10px;
+            border-radius: 5px 5px 0 0;
+            margin-bottom: -15px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .title {
+            font-weight: bold;
+        }
+        .buttons {
+            display: flex;
+            gap: 5px;
+        }
+        .button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .red { background-color: #ff5f56; }
+        .yellow { background-color: #ffbd2e; }
+        .green { background-color: #27c93f; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="title">Terminal - Horizontal Pod Autoscaler Creation</div>
+        <div class="buttons">
+            <div class="button red"></div>
+            <div class="button yellow"></div>
+            <div class="button green"></div>
+        </div>
+    </div>
+    <pre>
+<span class="prompt">PS C:\Users\MayRakgama\Desktop\guestbook-app></span> <span class="command">kubectl apply -f k8s/hpa.yaml</span>
+<span class="success">horizontalpodautoscaler.autoscaling/guestbook-hpa created</span>
+
+<span class="prompt">PS C:\Users\MayRakgama\Desktop\guestbook-app></span> <span class="command">kubectl get hpa</span>
+NAME            REFERENCE              TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
+<span class="highlight">guestbook-hpa   Deployment/guestbook   0%/50%    1         10        3          12s</span>
+
+<span class="prompt">PS C:\Users\MayRakgama\Desktop\guestbook-app></span> <span class="command">kubectl describe hpa guestbook-hpa</span>
+Name:                                                  guestbook-hpa
+Namespace:                                             default
+Labels:                                                <none>
+Annotations:                                           <none>
+CreationTimestamp:                                     Sun, 09 Mar 2025 09:08:45 +0200
+Reference:                                             Deployment/guestbook
+Metrics:                                               ( current / target )
+  resource cpu on pods  (as a percentage of request):  0% (0) / 50%
+Min replicas:                                          1
+Max replicas:                                          10
+Deployment pods:                                       3 current / 3 desired
+Conditions:
+  Type            Status  Reason               Message
+  ----            ------  ------               -------
+  AbleToScale     True    ScaleDownStabilized  recent recommendations were higher than current one, applying the highest recent recommendation
+  ScalingActive   True    ValidMetricFound     the HPA was able to successfully calculate a replica count from cpu resource utilization (percentage of request)
+  ScalingLimited  False   DesiredWithinRange   the desired count is within the acceptable range
+Events:
+  Type    Reason             Age   From                       Message
+  ----    ------             ----  ----                       -------
+  Normal  SuccessfulRescale  12s   horizontal-pod-autoscaler  New size: 3; reason: Current number of replicas below Deployment's replicas
+    </pre>
+</body>
+</html>

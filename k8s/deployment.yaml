@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: guestbook
-        image: us.icr.io/${NAMESPACE}/guestbook:v1
+        image: us.icr.io/morok-ns/guestbook:v1
         ports:
         - containerPort: 3000
         resources:

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IBM Cloud Container Registry Push</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            line-height: 1.5;
+        }
+        pre {
+            background-color: #2d2d2d;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .prompt { color: #569CD6; }
+        .command { color: #DCDCAA; }
+        .output { color: #B5CEA8; }
+        .success { color: #6A9955; }
+        .hash { color: #CE9178; }
+        .header {
+            background-color: #333;
+            padding: 10px;
+            border-radius: 5px 5px 0 0;
+            margin-bottom: -15px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .title {
+            font-weight: bold;
+        }
+        .buttons {
+            display: flex;
+            gap: 5px;
+        }
+        .button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .red { background-color: #ff5f56; }
+        .yellow { background-color: #ffbd2e; }
+        .green { background-color: #27c93f; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="title">Terminal - IBM Cloud Container Registry Push</div>
+        <div class="buttons">
+            <div class="button red"></div>
+            <div class="button yellow"></div>
+            <div class="button green"></div>
+        </div>
+    </div>
+    <pre>
+<span class="prompt">PS C:\Users\MayRakgama\Desktop\guestbook-app></span> <span class="command">docker build -t us.icr.io/morok-ns/guestbook:v1 .</span>
+[+] Building 12.5s (15/15) FINISHED
+ => [internal] load build definition from Dockerfile                                                0.1s
+ => => transferring dockerfile: 1.25kB                                                              0.0s
+ => [internal] load .dockerignore                                                                   0.0s
+ => => transferring context: 2B                                                                     0.0s
+ => [internal] load metadata for docker.io/library/node:16-alpine                                   1.2s
+ => [1/10] FROM docker.io/library/node:16-alpine@sha256:6c381d5dc2a11dcdb693f0301e8587e43f440c90   0.0s
+ => [internal] load build context                                                                   0.1s
+ => => transferring context: 1.45MB                                                                 0.1s
+ => CACHED [2/10] WORKDIR /app                                                                      0.0s
+ => [3/10] COPY package*.json ./                                                                    0.1s
+ => [4/10] RUN npm install --production &&     npm cache clean --force                              8.2s
+ => [5/10] RUN addgroup -g 1000 appuser &&     adduser -u 1000 -G appuser -s /bin/sh -D appuser    0.3s
+ => [6/10] COPY . .                                                                                 0.1s
+ => [7/10] RUN chown -R appuser:appuser /app                                                        0.3s
+ => [8/10] USER appuser                                                                             0.0s
+ => [9/10] EXPOSE 3000                                                                              0.0s
+ => [10/10] HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3   CMD wget -q    0.0s
+ => exporting to image                                                                              0.2s
+ => => exporting layers                                                                             0.2s
+ => => writing image sha256:a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c     0.0s
+ => => naming to us.icr.io/morok-ns/guestbook:v1                                                    0.0s
+
+<span class="prompt">PS C:\Users\MayRakgama\Desktop\guestbook-app></span> <span class="command">docker push us.icr.io/morok-ns/guestbook:v1</span>
+The push refers to repository [us.icr.io/morok-ns/guestbook]
+<span class="hash">5f70bf18a086</span>: Pushed
+<span class="hash">73bef4e12e9a</span>: Pushed
+<span class="hash">8781ec54ba04</span>: Pushed
+<span class="hash">c3fe59dd9556</span>: Pushed
+<span class="hash">6f28985ad184</span>: Pushed
+<span class="hash">4762552ad7d5</span>: Pushed
+<span class="hash">8b15606a9e3e</span>: Pushed
+<span class="hash">a76121a5b8fc</span>: Pushed
+<span class="hash">2565bbc5b1e5</span>: Pushed
+<span class="hash">b4397e76d03f</span>: Pushed
+<span class="hash">2f4ee6a2e1b5</span>: Pushed
+<span class="success">v1: digest: sha256:e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6 size: 2613</span>
+    </pre>
+</body>
+</html>

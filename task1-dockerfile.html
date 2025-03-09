@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dockerfile</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            line-height: 1.5;
+        }
+        pre {
+            background-color: #2d2d2d;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .comment { color: #6A9955; }
+        .keyword { color: #569CD6; }
+        .string { color: #CE9178; }
+        .command { color: #DCDCAA; }
+        .header {
+            background-color: #333;
+            padding: 10px;
+            border-radius: 5px 5px 0 0;
+            margin-bottom: -15px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .title {
+            font-weight: bold;
+        }
+        .buttons {
+            display: flex;
+            gap: 5px;
+        }
+        .button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .red { background-color: #ff5f56; }
+        .yellow { background-color: #ffbd2e; }
+        .green { background-color: #27c93f; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="title">Dockerfile</div>
+        <div class="buttons">
+            <div class="button red"></div>
+            <div class="button yellow"></div>
+            <div class="button green"></div>
+        </div>
+    </div>
+    <pre>
+<span class="comment"># Use Node.js LTS version as the base image</span>
+<span class="keyword">FROM</span> node:16-alpine
+
+<span class="comment"># Add metadata labels</span>
+<span class="keyword">LABEL</span> maintainer="Student"
+<span class="keyword">LABEL</span> version="1.0"
+<span class="keyword">LABEL</span> description="Guestbook application for Kubernetes deployment"
+
+<span class="comment"># Set working directory</span>
+<span class="keyword">WORKDIR</span> /app
+
+<span class="comment"># Copy package.json and package-lock.json</span>
+<span class="keyword">COPY</span> package*.json ./
+
+<span class="comment"># Install dependencies</span>
+<span class="keyword">RUN</span> npm install --production && \
+    npm cache clean --force
+
+<span class="comment"># Create a non-root user</span>
+<span class="keyword">RUN</span> addgroup -g 1000 appuser && \
+    adduser -u 1000 -G appuser -s /bin/sh -D appuser
+
+<span class="comment"># Copy application code</span>
+<span class="keyword">COPY</span> . .
+
+<span class="comment"># Change ownership to non-root user</span>
+<span class="keyword">RUN</span> chown -R appuser:appuser /app
+
+<span class="comment"># Switch to non-root user</span>
+<span class="keyword">USER</span> appuser
+
+<span class="comment"># Expose the port the app runs on</span>
+<span class="keyword">EXPOSE</span> 3000
+
+<span class="comment"># Define environment variable for versioning</span>
+<span class="keyword">ENV</span> VERSION=v1
+
+<span class="comment"># Add healthcheck</span>
+<span class="keyword">HEALTHCHECK</span> --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  <span class="command">CMD</span> wget -q -O- http://localhost:3000/ || exit 1
+
+<span class="comment"># Command to run the application</span>
+<span class="keyword">CMD</span> ["node", "app.js"]
+    </pre>
+</body>
+</html>

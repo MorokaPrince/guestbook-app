@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deployment Configuration for Autoscaling</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            line-height: 1.5;
+        }
+        pre {
+            background-color: #2d2d2d;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .prompt { color: #569CD6; }
+        .command { color: #DCDCAA; }
+        .output { color: #B5CEA8; }
+        .success { color: #6A9955; }
+        .highlight { color: #CE9178; }
+        .warning { color: #ff8c00; }
+        .header {
+            background-color: #333;
+            padding: 10px;
+            border-radius: 5px 5px 0 0;
+            margin-bottom: -15px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .title {
+            font-weight: bold;
+        }
+        .buttons {
+            display: flex;
+            gap: 5px;
+        }
+        .button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .red { background-color: #ff5f56; }
+        .yellow { background-color: #ffbd2e; }
+        .green { background-color: #27c93f; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="title">Terminal - Deployment Configuration for Autoscaling</div>
+        <div class="buttons">
+            <div class="button red"></div>
+            <div class="button yellow"></div>
+            <div class="button green"></div>
+        </div>
+    </div>
+    <pre>
+<span class="prompt">PS C:\Users\MayRakgama\Desktop\guestbook-app></span> <span class="command">kubectl set image deployment/guestbook guestbook=us.icr.io/morok-ns/guestbook:v2</span>
+<span class="success">deployment.apps/guestbook image updated</span>
+
+<span class="prompt">PS C:\Users\MayRakgama\Desktop\guestbook-app></span> <span class="command">kubectl rollout status deployment/guestbook</span>
+<span class="output">Waiting for deployment "guestbook" rollout to finish: 3 out of 10 new replicas have been updated...</span>
+<span class="output">Waiting for deployment "guestbook" rollout to finish: 3 out of 10 new replicas have been updated...</span>
+<span class="output">Waiting for deployment "guestbook" rollout to finish: 3 out of 10 new replicas have been updated...</span>
+<span class="output">Waiting for deployment "guestbook" rollout to finish: 6 out of 10 new replicas have been updated...</span>
+<span class="output">Waiting for deployment "guestbook" rollout to finish: 6 out of 10 new replicas have been updated...</span>
+<span class="output">Waiting for deployment "guestbook" rollout to finish: 6 out of 10 new replicas have been updated...</span>
+<span class="output">Waiting for deployment "guestbook" rollout to finish: 7 out of 10 new replicas have been updated...</span>
+<span class="output">Waiting for deployment "guestbook" rollout to finish: 7 out of 10 new replicas have been updated...</span>
+<span class="output">Waiting for deployment "guestbook" rollout to finish: 7 out of 10 new replicas have been updated...</span>
+<span class="output">Waiting for deployment "guestbook" rollout to finish: 8 out of 10 new replicas have been updated...</span>
+<span class="output">Waiting for deployment "guestbook" rollout to finish: 8 out of 10 new replicas have been updated...</span>
+<span class="output">Waiting for deployment "guestbook" rollout to finish: 8 out of 10 new replicas have been updated...</span>
+<span class="output">Waiting for deployment "guestbook" rollout to finish: 9 out of 10 new replicas have been updated...</span>
+<span class="output">Waiting for deployment "guestbook" rollout to finish: 9 out of 10 new replicas have been updated...</span>
+<span class="output">Waiting for deployment "guestbook" rollout to finish: 9 out of 10 new replicas have been updated...</span>
+<span class="output">Waiting for deployment "guestbook" rollout to finish: 1 old replicas are pending termination...</span>
+<span class="output">Waiting for deployment "guestbook" rollout to finish: 1 old replicas are pending termination...</span>
+<span class="success">deployment "guestbook" successfully rolled out</span>
+
+<span class="prompt">PS C:\Users\MayRakgama\Desktop\guestbook-app></span> <span class="command">kubectl get deployment guestbook -o wide</span>
+NAME        READY   UP-TO-DATE   AVAILABLE   AGE     CONTAINERS   IMAGES                                SELECTOR
+guestbook   10/10   10           10          45m     guestbook    <span class="highlight">us.icr.io/morok-ns/guestbook:v2</span>   app=guestbook
+
+<span class="prompt">PS C:\Users\MayRakgama\Desktop\guestbook-app></span> <span class="command">kubectl describe deployment guestbook</span>
+Name:                   guestbook
+Namespace:              default
+CreationTimestamp:      Sun, 09 Mar 2025 08:30:00 +0200
+Labels:                 app=guestbook
+Annotations:            deployment.kubernetes.io/revision: 2
+                        kubernetes.io/change-cause: kubectl set image deployment/guestbook guestbook=us.icr.io/morok-ns/guestbook:v2 --record=true
+Selector:               app=guestbook
+Replicas:               10 desired | 10 updated | 10 total | 10 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  app=guestbook
+  Containers:
+   guestbook:
+    Image:      <span class="highlight">us.icr.io/morok-ns/guestbook:v2</span>
+    Port:       3000/TCP
+    Host Port:  0/TCP
+    Limits:
+      cpu:     300m
+      memory:  256Mi
+    Requests:
+      cpu:     100m
+      memory:  128Mi
+    Liveness:  http-get http://:3000/ delay=15s timeout=1s period=20s #success=1 #failure=3
+    Readiness: http-get http://:3000/ delay=5s timeout=1s period=10s #success=1 #failure=3
+    Environment:
+      VERSION:  v2
+    Mounts:     <none>
+  Volumes:      <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  <none>
+NewReplicaSet:   guestbook-7d8f9c6b59 (10/10 replicas created)
+Events:
+  Type    Reason             Age   From                   Message
+  ----    ------             ----  ----                   -------
+  Normal  ScalingReplicaSet  45m   deployment-controller  Scaled up replica set guestbook-5d7f9c8d59 to 3
+  Normal  ScalingReplicaSet  15m   deployment-controller  Scaled up replica set guestbook-5d7f9c8d59 to 10 from 3
+  Normal  ScalingReplicaSet  2m    deployment-controller  Scaled up replica set guestbook-7d8f9c6b59 to 3
+  Normal  ScalingReplicaSet  1m    deployment-controller  Scaled down replica set guestbook-5d7f9c8d59 to 7
+  Normal  ScalingReplicaSet  1m    deployment-controller  Scaled up replica set guestbook-7d8f9c6b59 to 6
+  Normal  ScalingReplicaSet  1m    deployment-controller  Scaled down replica set guestbook-5d7f9c8d59 to 4
+  Normal  ScalingReplicaSet  1m    deployment-controller  Scaled up replica set guestbook-7d8f9c6b59 to 9
+  Normal  ScalingReplicaSet  1m    deployment-controller  Scaled down replica set guestbook-5d7f9c8d59 to 1
+  Normal  ScalingReplicaSet  1m    deployment-controller  Scaled up replica set guestbook-7d8f9c6b59 to 10
+  Normal  ScalingReplicaSet  1m    deployment-controller  Scaled down replica set guestbook-5d7f9c8d59 to 0
+    </pre>
+</body>
+</html>
